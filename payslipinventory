@@ -1,0 +1,1944 @@
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+float work_time = 0, night_differential = 0, overtime = 0, holiday = 0;
+float regular_pay = 0, night_shift_pay = 0, overtime_pay = 0, holiday_pay = 0, non_tax_earnings = 0, gross_earnings = 0, total_tax_earnings = 0;
+
+float hdmf_contribution = 0,s_hdmf_contribution = 0, phic_contribution = 0, s_phic_contribution = 0 , sss_contribution = 0, s_sss_contribution = 0, total_deductions = 0, total_taxes = 0, total_mandatory_govt = 0;
+
+
+void header(const string& value);
+void endLine();
+void design1();
+void design2();
+void design3();
+void design4();
+void design5();
+void design6();
+void design7();
+void design8();
+void design9();
+void design10();
+void design11();
+char information_verifier(char answer);
+int codeCounter1(int eCode);
+bool code_validator(int employee_code);
+bool validator12digits(long long value);
+bool digit_validator(float digit);
+float p_contribution(float h_contri);
+
+
+int main() {
+
+	char answer;
+	string period, payOut;
+	string companyName, codeInput = "Input";
+
+
+	do {
+
+
+		design1();
+		header(" P A Y R O L L  S Y S T E M ");
+		design1();
+
+		cout << "\n";
+
+		header(" ---> Part A:Header <--- ");
+
+		cout << "\n";
+
+		design2();
+		cout << left << setw(35);
+		cout << " Company Name: ";
+		getline(cin, companyName);
+
+		cout << "\n";
+
+		design2();
+		cout << left << setw(35);
+		cout << " Payslip Period: ";
+		getline(cin, period);
+
+		cout << "\n";
+
+		design2();
+		cout << left << setw(35);
+		cout << " Pay-Out: ";
+		getline(cin, payOut);
+
+		cout << "\n\n";
+
+		header(" S U M M A R Y ");
+
+		design11();
+		design9();
+		cout << " Company Name: ";
+		cout << companyName << "\n" << endl;
+		design9();
+		cout << " Payslip Period: ";
+		cout << period << "\n" << endl;
+		design9();
+		cout << " Pay-Out: ";
+		cout << payOut << endl;
+
+		design10();
+
+		cout << "\n";
+
+		endLine();
+
+		cout << "\n";
+
+
+		do {
+			design2();
+			cout << " Are the Informations Correct?(y/n): ";
+			cin >> answer;
+
+			if (char receive = information_verifier(answer)) {
+
+				continue;
+
+			}
+			else {
+
+
+				break;
+			}
+
+		} while (true);
+
+		cin.ignore();
+		system("cls");
+
+	} while (answer == 'n' || answer == 'N');
+
+	string combination = "Payslip Period: " + period + " (Pay-Out: " + payOut + ")";
+	int employee_code;
+	string employee_name;
+	string designation;
+
+	do {
+		design1();
+		header(" P A Y R O L L  S Y S T E M ");
+		design1();
+
+		cout << "\n";
+
+		header(" ---> Part B:Employee's Information <--- ");
+
+		cout << "\n";
+
+
+
+		do {
+			design2();
+			cout << left << setw(35);
+			cout << " Employee Code (9 Digits) : ";
+			cin >> employee_code;
+
+
+
+			if (!code_validator(employee_code)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					cin.clear();
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part B:Employee's Information <--- ");
+
+					cout << "\n";
+
+
+
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				break;
+			}
+
+
+		} while (true);
+
+
+		cout << "\n";
+
+		cin.ignore();
+
+		design2();
+		cout << left << setw(35);
+		cout << " Employee Name: ";
+		getline(cin, employee_name);
+
+		cout << "\n";
+
+		design2();
+		cout << left << setw(35);
+		cout << " Designation: ";
+		getline(cin, designation);
+
+		cout << "\n";
+
+		cout << "\n\n";
+
+		header(" S U M M A R Y ");
+
+		design11();
+		design9();
+		cout << " Employee Code: ";
+		cout << employee_code << "\n" << endl;
+		design9();
+		cout << " Employee Name: ";
+		cout << employee_name << "\n" << endl;
+		design9();
+		cout << " Designation:  ";
+		cout << designation << endl;
+
+		design10();
+
+		cout << "\n";
+
+		endLine();
+
+		cout << "\n";
+
+		do {
+			design2();
+			cout << " Are the Informations Correct?(y/n): ";
+			cin >> answer;
+
+			if (char receive = information_verifier(answer)) {
+
+				continue;
+
+			}
+			else {
+
+
+				break;
+			}
+
+		} while (true);
+
+		cin.ignore();
+		system("cls");
+
+
+	} while (answer == 'n' || answer == 'N');
+
+	float rate_per_hour = 0.0f;
+	long long sss_id = 0, sss_original = sss_id;
+	long long philHealthNo = 0, tin_number = 0, pag_ibig_number = 0;
+	int sss_counter;
+
+
+	do {
+		design1();
+		header(" P A Y R O L L  S Y S T E M ");
+		design1();
+
+		cout << "\n";
+
+		header(" ---> Part C:Rate and Government IDs <--- ");
+
+		cout << "\n";
+
+
+
+		while (true) {
+			design2();
+			cout << left << setw(35);
+			cout << " Hourly Rate: " << "Php ";
+			cin >> rate_per_hour;
+
+			cout << "\n";
+
+
+			if (!digit_validator(rate_per_hour)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part C:Rate and Government IDs <--- ");
+
+					cout << "\n";
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+
+				header(" ---> Part C:Rate and Government IDs <--- ");
+
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35);
+				cout << " Hourly Rate: " << "Php " << fixed << setprecision(2) << rate_per_hour << endl;
+
+				cout << "\n";
+				break;
+			}
+
+
+		}
+
+
+
+
+
+		while (true) {
+
+			design2();
+			cout << left << setw(35);
+			cout << " SSS No. (10 Digits): ";
+			cin >> sss_id;
+			cout << "\n";
+
+			sss_original = sss_id;
+
+
+			for (sss_counter = 0; sss_original > 0; sss_counter++) {
+
+				sss_original /= 10;
+
+			}
+
+
+
+			if (sss_counter != 10) {
+
+				cout << "\n";
+
+				design3();
+				header(" Please Enter A 10-Digit Number ");
+				design3();
+				cout << "\n";
+				cin.clear();
+				cin.ignore(1000, '\n');
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+
+					header(" ---> Part C:Rate and Government IDs <--- ");
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Hourly Rate: " << "Php " << rate_per_hour << endl;
+
+					cout << "\n";
+
+					continue;
+
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+
+					return 0;
+
+				}
+
+
+
+			}
+			else {
+
+				break;
+
+			}
+
+		}
+
+
+
+
+		while (true) {
+
+
+			design2();
+			cout << left << setw(35);
+			cout << " Phil Health No. (12 Digits): ";
+			cin >> philHealthNo;
+
+			cout << "\n";
+
+
+			if (!validator12digits(philHealthNo)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+
+					header(" ---> Part C:Rate and Government IDs <--- ");
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Hourly Rate: " << "Php " << rate_per_hour << endl;
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " SSS No. (10 Digits): " << sss_id << endl;
+
+					cout << "\n";
+
+					continue;
+
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+
+					return 0;
+
+				}
+			}
+			else {
+
+				break;
+			}
+
+
+		}
+
+		while (true) {
+
+
+			design2();
+			cout << left << setw(35);
+			cout << " TIN (12 Digits): ";
+			cin >> tin_number;
+
+			cout << "\n";
+
+			if (!validator12digits(tin_number)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+
+					header(" ---> Part C:Rate and Government IDs <--- ");
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Hourly Rate: " << "Php " << rate_per_hour << endl;
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " SSS No. (10 Digits): " << sss_id << endl;
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Phil Health No. (12 Digits): " << philHealthNo << endl;
+
+					cout << "\n";
+
+					continue;
+
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+
+					return 0;
+
+				}
+			}
+			else {
+
+				break;
+			}
+
+
+		}
+
+		while (true) {
+
+
+			design2();
+			cout << left << setw(35);
+			cout << " Pag-Ibig (12 Digits): ";
+			cin >> pag_ibig_number;
+
+			cout << "\n";
+
+			if (!validator12digits(pag_ibig_number)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+
+					header(" ---> Part C:Rate and Government IDs <--- ");
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Hourly Rate: " << "Php " << rate_per_hour << endl;
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " SSS No. (10 Digits): " << sss_id << endl;
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Phil Health No. (12 Digits): " << philHealthNo << endl;
+
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " TIN (12 Digits): " << tin_number << endl;
+
+					cout << "\n";
+
+					continue;
+
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+
+					return 0;
+
+				}
+			}
+			else {
+
+				break;
+			}
+
+
+		}
+
+		cout << "\n\n";
+
+		header(" S U M M A R Y ");
+
+		design7();
+		design5();
+		cout << " Hourly Rate: " << "Php " << rate_per_hour << "\n" << endl;
+		design5();
+		cout << " SSS No. (10 Digits): " << sss_id << "\n" << endl;
+		design5();
+		cout << " Phil Health No. (12 Digits): " << philHealthNo << "\n" << endl;
+		design5();
+		cout << " TIN (12 Digits): " << tin_number << "\n" << endl;
+		design5();
+		cout << " Pag-Ibig (12 Digits): " << pag_ibig_number << "\n" << endl;
+		design6();
+
+		cout << "\n";
+
+		endLine();
+
+		cout << "\n";
+
+
+		do {
+			design2();
+			cout << " Are the Informations Correct?(y/n): ";
+			cin >> answer;
+
+			if (char receive = information_verifier(answer)) {
+
+				continue;
+
+			}
+			else {
+
+
+				break;
+			}
+
+		} while (true);
+
+		cin.ignore();
+		system("cls");
+
+	} while (answer == 'n' || answer == 'N');
+
+	
+
+
+
+
+
+
+	do {
+
+
+		design1();
+		header(" P A Y R O L L  S Y S T E M ");
+		design1();
+
+		cout << "\n";
+
+		header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+
+		cout << "\n";
+
+
+		while (true) {
+			design2();
+			cout << left << setw(35) << " Active Work Time (Hours): ";
+			cin >> work_time;
+
+			cout << "\n";
+
+
+			if (!digit_validator(work_time)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+					cout << "\n";
+
+
+					continue;
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+				header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << fixed << setprecision(2) << " Active Work Time (Hours): " << work_time << endl;
+
+				cout << "\n";
+
+				regular_pay = work_time * rate_per_hour;
+				gross_earnings += regular_pay;
+				design2();
+				cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+				cout << "\n\n";
+				break;
+
+			}
+
+
+		}
+
+		while (true) {
+			design2();
+			cout << left << setw(35) << " Total Overtime |30%| (Hours) : ";
+			cin >> overtime;
+
+			cout << "\n";
+
+
+			if (!digit_validator(overtime)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Active Work Time (Hours): " << work_time << endl;
+					cout << "\n";
+					design2();
+					cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+					cout << "\n\n";
+
+					continue;
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+				header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Active Work Time (Hours): " << work_time << endl;
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Overtime (Hours): " << overtime << endl;
+
+				cout << "\n";
+
+				overtime_pay = (rate_per_hour * 0.30) * overtime;
+				gross_earnings += overtime_pay;
+				design2();
+				cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+				cout << "\n\n";
+
+				break;
+			}
+
+
+		}
+
+
+		while (true) {
+			design2();
+			cout << left << setw(35) << " Total Night Differential |10%| (Hours): ";
+			cin >> night_differential;
+
+			cout << "\n";
+
+
+			if (!digit_validator(night_differential)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Active Work Time (Hours): " << work_time << endl;
+					cout << "\n";
+					design2();
+					cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+					cout << "\n\n";
+
+
+					design2();
+					cout << left << setw(35);
+					cout << " Total Overtime (Hours): " << overtime << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+					cout << "\n\n";
+
+					continue;
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+				header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Active Work Time (Hours): " << work_time << endl;
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Overtime (Hours): " << overtime << endl;
+
+				cout << "\n";
+
+				overtime_pay = (rate_per_hour * 0.30) * overtime;
+				design2();
+				cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Night Differential (Hours): " << night_differential << endl;
+				cout << "\n";
+
+				night_shift_pay = (rate_per_hour * 0.10) * night_differential;
+				gross_earnings += night_shift_pay;
+				design2();
+				cout << left << setw(35) << " Night Shift Pay: " << "Php " << night_shift_pay << endl;
+				cout << "\n\n";
+				break;
+
+			}
+
+
+		}
+
+		while (true) {
+			design2();
+			cout << left << setw(35) << " Total Holiday |30%| (Hours): ";
+			cin >> holiday;
+
+			cout << "\n";
+
+
+			if (!digit_validator(holiday)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Active Work Time (Hours): " << work_time << endl;
+					cout << "\n";
+					design2();
+					cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+					cout << "\n\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Total Overtime (Hours): " << overtime << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+					cout << "\n\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Total Night Differential (Hours): " << night_differential << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " Night Shift Pay: " << "Php " << night_shift_pay << endl;
+					cout << "\n\n";
+
+					continue;
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+				header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Active Work Time (Hours): " << work_time << endl;
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Overtime (Hours): " << overtime << endl;
+
+				cout << "\n";
+
+				overtime_pay = (rate_per_hour * 0.30) * overtime;
+				design2();
+				cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Night Differential (Hours): " << night_differential << endl;
+				cout << "\n";
+
+				night_shift_pay = (rate_per_hour * 0.10) * night_differential;
+				design2();
+				cout << left << setw(35) << " Night Shift Pay: " << "Php " << night_shift_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Holiday (Hours): " << holiday << endl;
+
+				cout << "\n";
+
+				holiday_pay = (rate_per_hour * 0.30) * holiday;
+				gross_earnings += holiday_pay;
+
+				design2();
+				cout << left << setw(35) << " Holiday Pay: " << "Php " << holiday_pay << endl;
+				cout << "\n\n";
+				break;
+
+			}
+
+
+		}
+
+		while (true) {
+			design2();
+			cout << left << setw(35) << " Non-Taxable Earnings: ";
+			cin >> non_tax_earnings;
+
+			cout << "\n";
+
+
+			if (!digit_validator(non_tax_earnings)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Active Work Time (Hours): " << work_time << endl;
+					cout << "\n";
+					design2();
+					cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+					cout << "\n\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Total Overtime (Hours): " << overtime << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+					cout << "\n\n";
+
+					design2();
+					cout << left << setw(35);
+					cout << " Total Night Differential (Hours): " << night_differential << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " Night Shift Pay: " << "Php " << night_shift_pay << endl;
+					cout << "\n\n";
+
+					design2();
+					cout << left << setw(35) << " Total Holiday (Hours): " << holiday << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " Holiday Pay: " << "Php " << holiday_pay << endl;
+					cout << "\n\n";
+
+					continue;
+
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+				header(" ---> Part D.1: Taxable and Non-Taxable Earnings <--- ");
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Active Work Time (Hours): " << work_time << endl;
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " Regular Pay: " << "Php " << regular_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Overtime (Hours): " << overtime << endl;
+
+				cout << "\n";
+
+				overtime_pay = (rate_per_hour * 0.30) * overtime;
+				design2();
+				cout << left << setw(35) << " Overtime Pay: " << "Php " << overtime_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Night Differential (Hours): " << night_differential << endl;
+				cout << "\n";
+
+				night_shift_pay = (rate_per_hour * 0.10) * night_differential;
+				design2();
+				cout << left << setw(35) << " Night Shift Pay: " << "Php " << night_shift_pay << endl;
+				cout << "\n\n";
+
+				design2();
+				cout << left << setw(35) << " Total Holiday (Hours): " << holiday << endl;
+
+				cout << "\n";
+
+				holiday_pay = (rate_per_hour * 0.30) * holiday;
+				design2();
+				cout << left << setw(35) << " Holiday Pay: " << "Php " << holiday_pay << endl;
+				cout << "\n\n";
+
+				gross_earnings += non_tax_earnings;
+
+				design2();
+				cout << left << setw(35) << " Non-Taxable Earnings: " << non_tax_earnings << endl;
+				cout << "\n\n";
+
+				break;
+			}
+
+
+		}
+
+		header(" S U M M A R Y ");
+
+		design7();
+		design8();
+		cout << "" << left << setw(10) << " HOURS " << " TOTAL " << endl;
+		cout << "\n";
+		design5();
+		cout << " Regular Pay: " << left << setw(10) << work_time << regular_pay << "\n" << endl;
+		design5();
+		cout << " Overtime Pay : " << left << setw(10) << overtime << overtime_pay << "\n" << endl;
+		design5();
+		cout << " Night Shift Pay: " << left << setw(10) << night_differential << night_shift_pay << "\n" << endl;
+		design5();
+		cout << " Holiday Pay: " << left << setw(10) << holiday << holiday_pay << "\n" << endl;
+		design5();
+		cout << " Non-Taxable Earnings: " << left << setw(10) << 0.00 << non_tax_earnings << "\n" << endl;
+		cout << setw(77) << "" << " ------- " << endl;
+		design5();
+		cout << " GROSS EARNINGS: " << setw(6) << "" << "Php " << gross_earnings << endl;
+		design6();
+
+		cout << "\n";
+
+		endLine();
+
+		cout << "\n";
+
+
+		do {
+			design2();
+			cout << " Are the Informations Correct?(y/n): ";
+			cin >> answer;
+
+			if (char receive = information_verifier(answer)) {
+
+				continue;
+
+			}
+			else if (answer == 'n' || answer == 'N') {
+
+				gross_earnings = 0;
+				break;
+
+			}
+			else {
+
+				break;
+
+			}
+
+		} while (true);
+
+		cin.ignore();
+		system("cls");
+
+
+	} while (answer == 'n' || answer == 'N');
+
+	
+
+
+	do {
+		design1();
+		header(" P A Y R O L L  S Y S T E M ");
+		design1();
+
+		cout << "\n";
+
+		header(" ---> Part D.2: Deductions <--- ");
+
+		cout << "\n";
+
+
+		while (true) {
+
+			design2();
+			cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "(%) ";
+			cin >> hdmf_contribution;
+
+			cout << "\n";
+
+
+			if (!digit_validator(hdmf_contribution)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.2: Deductions <--- ");
+					cout << "\n";
+
+
+					continue;
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+
+				header(" ---> Part D.2: Deductions <--- ");
+
+				cout << "\n";
+
+				design2();
+
+				s_hdmf_contribution += p_contribution(hdmf_contribution);
+
+				cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_hdmf_contribution << endl;
+
+				total_deductions += s_hdmf_contribution;
+
+				cout << "\n";
+
+				break;
+
+
+
+			}
+
+
+		}
+
+		while (true) {
+
+			design2();
+			cout << left << setw(35) << " PHIC CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "(%) ";
+			cin >> phic_contribution;
+
+			cout << "\n";
+
+
+			if (!digit_validator(phic_contribution)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.2: Deductions <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << s_hdmf_contribution << endl;
+					cout << "\n";
+
+
+					continue;
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+
+				header(" ---> Part D.2: Deductions <--- ");
+
+				cout << "\n";
+
+				design2();
+
+				cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_hdmf_contribution << endl;
+
+				cout << "\n";
+
+				design2();
+
+				s_phic_contribution += p_contribution(phic_contribution);
+
+				cout << left << setw(35) << " PHIC CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_phic_contribution << endl;
+
+				total_deductions += s_phic_contribution;
+
+				cout << "\n";
+
+				break;
+
+
+
+			}
+
+
+		}
+
+		while (true) {
+
+			design2();
+			cout << left << setw(35) << " SSS CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << " (%) ";
+			cin >> sss_contribution;
+
+			cout << "\n";
+
+
+			if (!digit_validator(sss_contribution)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.2: Deductions <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << s_hdmf_contribution << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " PHIC CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << s_phic_contribution << endl;
+					cout << "\n";
+
+
+					continue;
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+
+				header(" ---> Part D.2: Deductions <--- ");
+
+				cout << "\n";
+
+				design2();
+
+				cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_hdmf_contribution << endl;
+
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " PHIC CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_phic_contribution << endl;
+
+				cout << "\n";
+
+				design2();
+
+				s_sss_contribution += p_contribution(sss_contribution);
+
+				cout << left << setw(35) << " SSS CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << " Php " << fixed << setprecision(2) << s_sss_contribution << endl;
+
+				total_deductions += s_sss_contribution;
+
+				cout << "\n";
+
+				break;
+
+
+
+			}
+
+
+		}
+
+		while (true) {
+
+			design2();
+			cout << left << setw(35) << " TOTAL TAXES: " << setw(10) << "" << " Php ";
+			cin >> total_taxes;
+
+			cout << "\n";
+
+
+			if (!digit_validator(total_taxes)) {
+
+				header(" Press Enter to Clear ");
+
+				if (cin.get() == '\n') {
+
+					system("cls");
+
+					design1();
+					header(" P A Y R O L L  S Y S T E M ");
+					design1();
+
+					cout << "\n";
+					header(" ---> Part D.2: Deductions <--- ");
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << s_hdmf_contribution << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " PHIC CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << s_phic_contribution << endl;
+					cout << "\n";
+
+					design2();
+					cout << left << setw(35) << " SSS CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << " Php " << s_sss_contribution << endl;
+
+					cout << "\n";
+
+					continue;
+				}
+				else {
+
+					design3();
+					header(" Instruction Denied, Program Restarting... ");
+					design3();
+					return 0;
+
+				}
+
+			}
+			else {
+
+
+				system("cls");
+
+				design1();
+				header(" P A Y R O L L  S Y S T E M ");
+				design1();
+
+				cout << "\n";
+
+				header(" ---> Part D.2: Deductions <--- ");
+
+				cout << "\n";
+
+				design2();
+
+				cout << left << setw(40) << " HDMF CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_hdmf_contribution << endl;
+
+				cout << "\n";
+
+				design2();
+				cout << left << setw(40) << " PHIC CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << "Php " << fixed << setprecision(2) << s_phic_contribution << endl;
+
+				cout << "\n";
+
+				design2();
+				cout << left << setw(40) << " SSS CONTRIBUTION EMPLOYEE SHARE ADJUSTMENT: " << " Php " << fixed << setprecision(2) << s_sss_contribution << endl;
+
+				cout << "\n";
+
+				design2();
+				cout << left << setw(35) << " TOTAL TAXES: " << setw(10) << "" << " Php " << fixed << setprecision(2) << total_taxes << endl;
+
+				total_deductions += total_taxes;
+
+				cout << "\n";
+
+				break;
+
+			}
+
+		}
+		cout << "\n\n";
+
+		header(" S U M M A R Y ");
+
+		design7();
+		design5();
+		cout << " HDMF CONTRIBUTION: " << setw(3) << "" << "Php " << s_hdmf_contribution << "\n" << endl;
+		design5();
+		cout << " PHIC CONTRIBUTION: " << setw(3) << "" << "Php " << s_phic_contribution << "\n" << endl;
+		design5();
+		cout << " SSS CONTRIBUTION: " << setw(3) << "" << "Php " << s_sss_contribution << "\n" << endl;
+		design5();
+		cout << " TOTAL TAXES: " << setw(3) << "" << "Php " << total_taxes << "\n" << endl;
+		design5();
+		cout << "" << setw(2) << "" << "------------" << "\n" << endl;
+		design5();
+		cout << " TOTAL DEDUCTIONS " << setw(3) << "" << "Php " << total_deductions << "\n" << endl;
+		design6();
+
+		cout << "\n";
+
+		endLine();
+
+		cout << "\n";
+
+
+		do {
+			design2();
+			cout << " Are the Informations Correct?(y/n): ";
+			cin >> answer;
+
+			if (char receive = information_verifier(answer)) {
+
+				continue;
+
+			}
+			else if (answer == 'n' || answer == 'N') {
+
+				s_hdmf_contribution = 0;
+				s_phic_contribution = 0;
+				s_sss_contribution = 0;
+
+				total_deductions = 0;
+				break;
+
+			}
+			else {
+
+				break;
+
+			}
+
+		} while (true);
+
+		cin.ignore();
+		system("cls");
+
+
+
+
+	} while (answer == 'n' || answer == 'N');
+
+	system("cls");
+
+	ofstream print("payslip.txt");
+
+	if (print.is_open()) {
+
+		
+
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+
+		const int totalWidth = 120;
+
+		int headerSize = companyName.length();
+
+		int padding = (totalWidth - headerSize) / 2;
+
+		print << setw(padding) << setfill(' ') << "" << companyName << endl;
+
+		headerSize = combination.length();
+
+		padding = (totalWidth - headerSize) / 2;
+
+		print << setw(padding) << setfill(' ') << "" << combination << endl;
+
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+
+		print << "\n";
+
+		print << left << setw(17) << " Employee Code: " << left << setw(17) << employee_code << left << setw(16) << "Employee Name:" << left << setw(33) << employee_name << left << setw(14) << "Designation:" << designation << endl;
+		print << left << setw(17) << fixed << setprecision(2) << " Hourly Salary: " << rate_per_hour << endl;
+		print << " Tax Code: " << setw(15) << "" << " SSS No. " << setw(14) << "" << " Phil Health No. " << setw(10) << "" << " TIN " << setw(15) << "" << " Pagibig " << endl;
+		print << "" << setw(27) << "" << sss_id << setw(13) << "" << philHealthNo << setw(15) << "" << tin_number << setw(8) << "" << pag_ibig_number << endl;
+
+		cout << fixed << setprecision(2);
+
+		print << "\n";
+
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << setw(25) << "" << " EARNINGS " << setw(25) << "" << "|" << setw(25) << "" << " DEDUCTIONS " << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << left << setw(26) << " DESCRIPTION " << left << setw(20) << " HOURS " << left << setw(14) << " TOTAL " << setw(3) << "|" << left << setw(44) << " DESCRIPTION " << " TOTAL " << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << setw(20) << "" << " TAXABLE EARNINGS " << setw(22) << "" << "|" << setw(16) << "" << " MANDATORY GOVT CONTRIBUTIONS " << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << left << setw(27) << " REGULAR PAY " << left << setw(20) << fixed << setprecision(2) << work_time << left << setw(13) << regular_pay << setw(3) << "|" << left << setw(45) << " HDMF CONTRIBUTION EMPLOYEE SA " << s_hdmf_contribution << endl;
+		print << left << setw(27) << " OVERTIME PAY " << left << setw(20) << overtime << left << setw(13) << overtime_pay << setw(3) << "|" << left << setw(45) << " PHIC CONTRIBUTION EMPLOYEE SA " << s_phic_contribution << endl;
+		print << left << setw(27) << " NIGHT SHIFT PAY " << left << setw(20) << night_differential << left << setw(13) << night_shift_pay << setw(3) << "|" << left << setw(45) << " SSS  CONTRIBUTION EMPLOYEE SA " << s_sss_contribution << endl;
+		print << left << setw(27) << " HOLIDAY PAY " << left << setw(20) << holiday << left << setw(13) << holiday_pay << "|" << endl;
+		print << setw(45) << "" << "-----------" << setw(4) << "" << "|" << setw(45) << "" << "-----------" << endl;
+		total_mandatory_govt += (s_hdmf_contribution + s_phic_contribution + s_sss_contribution);
+		total_tax_earnings += (regular_pay + overtime_pay + night_shift_pay + holiday_pay);
+		print << left << setw(47) << " TOTAL TAXABLE EARNINGS (A) (PHP) " << setw(13) << total_tax_earnings << "|" << setw(2) << "" << left << setw(45) << " TOTAL MANDATORY GOVT CONT (C) (PHP) " << total_mandatory_govt << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << setw(18) << "" << " NON-TAXABLE EARNINGS " << setw(20) << "" << "|" << setw(28) << "" << " TAXES " << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << setw(60) << "" << "|" << endl;
+		print << setw(45) << "" << "-----------" << setw(4) << "" << "|" << setw(45) << "" << "-----------" << endl;
+		print << left << setw(47) << " TOTAL NON-TAXABLE EARNINGS (B) (PHP) " << setw(13) << non_tax_earnings << "|" << setw(2) << "" << left << setw(45) << " TOTAL TAXES (D) (PHP) " << total_taxes << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << left << setw(47) << " GROSS EARNINGS (E) (A+B) (PHP) " << setw(13) << gross_earnings << "|" << setw(2) << "" << left << setw(45) << " TOTAL DEDUCTIONS (F) (PHP) " << total_deductions << endl;
+		print << left << setw(47) << " NET TAXABLE INCOME (A-C) (PHP) " << setw(13) << total_tax_earnings - total_mandatory_govt << "|" << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+		print << setw(63) << "" << left << setw(45) << " NET EARNINGS (E-F) (PHP) " << gross_earnings - total_deductions << endl;
+		print << setw(120) << setfill('-') << "" << setfill(' ') << endl; design1();
+
+		header(" Printed Successfully ");
+	
+		print.close();
+	}
+
+
+	return 0;
+}
+
+
+void header(const string& value) {
+
+	const int totalWidth = 120;
+
+	int headerSize = value.length();
+
+	int padding = (totalWidth - headerSize) / 2;
+
+	cout << setw(padding) << setfill(' ') << "" << value << endl;
+
+}
+
+
+void endLine() {
+
+
+	cout << setw(120) << setfill('-') << "" << endl;
+
+}
+
+void design1() {
+	cout << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+}
+
+void design2() {
+	cout << setw(8) << setfill(' ') << "";
+}
+
+void design3() {
+	cout << setw(32) << setfill(' ') << "" << setw(55) << setfill('-') << "" << endl;
+}
+
+void design4() {
+	cout << setw(13) << setfill(' ') << "";
+}
+
+void design5() {
+	cout << setw(33) << "" << left << setw(35);
+}
+void design6() {
+
+	cout << setw(31) << setfill(' ') << "" << setw(1) << setfill('|') << "" << setw(55) << setfill(' ') << "" << setw(1) << setfill('|') << "" << setfill(' ') << endl;
+	cout << setw(32) << setfill(' ') << "" << setw(55) << setfill('-') << "" << endl;
+
+}
+
+void design7() {
+	cout << setw(32) << setfill(' ') << "" << setw(55) << setfill('-') << "" << endl;
+	cout << setw(31) << setfill(' ') << "" << setw(1) << setfill('|') << "" << setw(55) << setfill(' ') << "" << setw(1) << setfill('|') << "" << setfill(' ') << endl;
+}
+
+void design8() {
+	cout << setw(33) << "" << left << setw(34);
+}
+
+void design9() {
+	cout << setw(32) << "" << left << setw(36);
+}
+void design10() {
+
+	cout << setw(19) << setfill(' ') << "" << setw(1) << setfill('|') << "" << setw(75) << setfill(' ') << "" << setw(13) << "" << "|" << "" << setfill(' ') << endl;
+	cout << setw(20) << setfill(' ') << "" << setw(88) << setfill('-') << "" << endl;
+
+}
+
+void design11() {
+	cout << setw(20) << setfill(' ') << "" << setw(88) << setfill('-') << "" << endl;
+	cout << setw(19) << setfill(' ') << "" << setw(1) << setfill('|') << "" << setw(75) << setfill(' ') << "" << setw(13) << "" << "|" << "" << setfill(' ') << endl;
+}
+
+
+char information_verifier(char answer) {
+
+
+
+	if (cin.fail() || cin.peek() != '\n' || answer != 'y' && answer != 'Y' && answer != 'N' && answer != 'n') {
+
+		cout << "\n";
+		design3();
+		header(" Please Enter A Valid Choice ");
+		design3();
+		cout << "\n";
+		cin.clear();
+		cin.ignore(1000, '\n');
+
+		return true;
+	}
+	else {
+
+		return false;
+	}
+
+
+
+
+
+
+
+}
+
+int codeCounter1(int eCode) {
+
+
+	if (eCode == 0)
+		return 1;
+
+	int count = 0;
+
+	while (eCode > 0 && count <= 9) {
+
+		eCode /= 10;
+		count++;
+
+	}
+
+	return count;
+
+}
+
+bool code_validator(int employee_code) {
+
+	int codeCount = codeCounter1(employee_code);
+
+	if (cin.fail() || codeCount != 9) {
+
+		cout << "\n";
+		design3();
+		header(" Please Enter A 9-Digit Number ");
+		design3();
+		cout << "\n";
+		cin.clear();
+		cin.ignore(1000, '\n');
+
+		return false;
+
+
+	}
+
+	return true;
+
+}
+
+bool validator12digits(long long value) {
+
+	long long counter12;
+
+	for (counter12 = 0; value > 0; counter12++) {
+
+		value /= 10;
+
+	}
+
+	if (counter12 != 12 || cin.peek() != '\n') {
+
+		cout << "\n";
+
+		design3();
+		header(" Please Enter A 12-Digit Number ");
+		design3();
+		cout << "\n";
+		cin.clear();
+		cin.ignore(1000, '\n');
+
+
+		return false;
+	}
+	else {
+		return true;
+	}
+
+
+}
+
+bool digit_validator(float digit) {
+
+
+	if (cin.peek() != '\n') {
+
+		cin.clear();
+		cin.ignore(1000, '\n');
+		design3();
+		header(" Please Enter Digits Only ");
+		design3();
+		cout << "\n";
+
+		return false;
+	}
+	else {
+
+		return true;
+
+	}
+
+}
+
+float p_contribution (float h_contri) {
+
+
+	return gross_earnings * (h_contri / 100);
+
+
+}
+ 
